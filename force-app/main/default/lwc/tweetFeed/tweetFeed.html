@@ -19,12 +19,12 @@
 
                     </div>
                     <div style="background-color:aliceblue;white-space: pre-line;  overflow: auto;" class="slds-col slds-size_3-of-12 slds-tabs_card">
-                        <h3>Comments:</h3>
+                        <h3 style="position:sticky; overflow:hidden ;top:0; background-color:rgb(7, 26, 42); color:aliceblue">Comments:</h3>
                         <template if:true={tweet.Comments__r}>
                             <div>
                                 <template for:each={tweet.Comments__r} for:item="comment">
                                     <div key={comment.Id}>
-                                        <div  >
+                                        <div  style="background-color:aliceblue"  class="slds-tabs_card">
                                             <strong>{comment.Author__r.Name}:</strong> {comment.Content__c}
                                         </div>
                                     </div>

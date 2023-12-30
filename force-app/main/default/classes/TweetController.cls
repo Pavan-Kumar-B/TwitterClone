@@ -18,7 +18,7 @@ public with sharing class TweetController {
     @AuraEnabled(cacheable=true)
     public static List<Tweet__c> getTweets()
     {   
-         list<Tweet__c> t = [SELECT Id,Author__r.Name,LikeCount__c,(SELECT id,Content__c,Author__r.Name FROM Comments__r),RetweetCount__c,Content__c FROM Tweet__c ORDER BY CreatedDate DESC];
+         list<Tweet__c> t = [SELECT Id,Author__r.Name,LikeCount__c,(SELECT id,Content__c,Author__r.Name FROM Comments__r ORDER BY CreatedDate DESC),RetweetCount__c,Content__c FROM Tweet__c ORDER BY CreatedDate DESC];
        
         return t;
     }

@@ -1,0 +1,33 @@
+<template>
+    <template if:true={tweetslen}>
+        <div style="font-size: xx-large;">
+            <p>Your Feed is Empty</p>
+        </div>
+    </template>
+    <template if:true={tweets}>
+        <template for:each={tweets} for:item="tweet">
+            <lightning-card key={tweet.Id} title={tweet.Author__r.Name} data-id={tweet.Id}>
+                <div>
+                    <lightning-textarea value={tweet.Content__c} readonly></lightning-textarea>
+                    <p>Likes : {tweet.LikeCount__c}</p>
+                    <p>ReTweets : {tweet.RetweetCount__c}</p>
+
+                </div>
+                <div>
+                    <lightning-button variant="brand" label="Retweet" onclick={handleRetweet}
+                        data-id={tweet.Id}></lightning-button>
+                    <lightning-button variant="brand" label="Like" onclick={handleLike}
+                        data-id={tweet.Id}></lightning-button>
+                    <lightning-button variant="brand" label="Comment" onclick={handleComment}
+                        data-id={tweet.Id}></lightning-button>
+                </div>
+            </lightning-card>
+        </template>
+    </template>
+    <template if:true={error}>
+        <p style="font-size: xx-large;">An error occurred while fetching tweets.</p>
+    </template>
+    <template if:true={loading}>
+        <p style="font-size: xx-large;">Loading tweets...</p>
+    </template>
+</template>

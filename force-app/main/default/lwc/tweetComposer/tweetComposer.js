@@ -8,14 +8,18 @@ export default class TweetComposer extends LightningElement
         this.tweetContent = event.target.value;
   }
 
-    handleSubmit()
+
+    handlePost()
     {
          createTweet({ content: this.tweetContent })
         .then(() => {
           this.tweetContent = '';
+          alert("Posted");
+          window.location.reload();
          })
         .catch(error => {
-            alert("Enter Tweet Content");
+            alert("Failed to tweet");
+            console.log(error);
         });
     }
 }

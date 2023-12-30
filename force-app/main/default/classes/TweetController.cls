@@ -18,7 +18,7 @@ public with sharing class TweetController {
     @AuraEnabled(cacheable=true)
     public static List<Tweet__c> getTweets()
     {   
-         list<Tweet__c> t = [SELECT Id,Author__r.Name,LikeCount__c,RetweetCount__c,Content__c FROM Tweet__c ORDER BY CreatedDate DESC ];
+         list<Tweet__c> t = [SELECT Id,Author__r.Name,LikeCount__c,(SELECT id,Content__c,Author__r.Name FROM Comments__r),RetweetCount__c,Content__c FROM Tweet__c ORDER BY CreatedDate DESC];
        
         return t;
     }
@@ -28,19 +28,24 @@ public with sharing class TweetController {
     {   
         String retweetingUserId=UserInfo.getUserId();
         Tweet__c originalTweet = [SELECT Id,Author__c FROM Tweet__c WHERE Id = :originalTweetId LIMIT 1];
-
-       if (originalTweet.Author__c == retweetingUserId) {
-            throw new AuraHandledException('Cannot retweet your own tweet');
+	    List<Retweet__c> existingRetweet = [SELECT Id FROM Retweet__c WHERE OriginalTweetId__c = :originalTweetId AND 	RetweetingUser__c = :retweetingUserId];
+        if (originalTweet.Author__c == retweetingUserId) {
+                throw new AuraHandledException('Cannot retweet your own tweet');
+            }
+        if(existingRetweet.isEmpty())
+        {
+            Retweet__c retweet = new Retweet__c(OriginalTweetId__c = originalTweetId, RetweetingUser__c = retweetingUserId);
+            insert retweet;
         }
-        Retweet__c retweet = new Retweet__c(OriginalTweetId__c = originalTweetId, RetweetingUser__c = retweetingUserId);
-        insert retweet;
+        else
+        {
+                throw new AuraHandledException('Already retweeted');
+        }
     }
-
     @AuraEnabled
     public static Boolean likeTweet(String tweetId) {
-        Boolean liked;
         String likingUserId = UserInfo.getUserId();
-        List<Tweet__c> tweets = [SELECT Id,LikeCount__c,Author__c  FROM Tweet__c WHERE Id = :tweetId LIMIT 1];
+        List<Tweet__c> tweets = [SELECT Id,Author__c  FROM Tweet__c WHERE Id = :tweetId LIMIT 1];
         Tweet__c tweet;
         if(!tweets.isEmpty())
         {
@@ -66,20 +71,28 @@ public with sharing class TweetController {
         System.debug(l);
         if (l == null) {
             l = new Like__c(TweetId__c = tweetId, LikingUser__c = likingUserId);
-            System.debug(l);
             insert l;
-            System.debug(tweet);
-            tweet.LikeCount__c++;
-            update tweet;
-            liked = true;
-            return liked;
+            return true;
         } else {
             delete l;
-            tweet.LikeCount__c--;
-            update tweet;
-            liked = false;
-            return liked;
+            return false;
         }
+    }
+
+    @AuraEnabled
+    public static void createComment(String content, String tweetId)
+    {
+        if (String.isBlank(content) || content.length() > 280) {
+            throw new AuraHandledException('Invalid tweet comment');
+        }
+
+        // Create the Tweet__c record
+        Comment__c newComment = new Comment__c();
+        newComment.Tweet__c=tweetId;
+        newComment.Content__c = content;
+		newComment.Author__c = UserInfo.getUserId();
+        insert newComment;
+
     }
     
 }

@@ -5,15 +5,37 @@
         </div>
     </template>
     <template if:true={tweets}>
+
         <template for:each={tweets} for:item="tweet">
             <lightning-card key={tweet.Id} title={tweet.Author__r.Name} data-id={tweet.Id}>
-                <div>
-                    <lightning-textarea value={tweet.Content__c} readonly></lightning-textarea>
-                    <p>Likes : {tweet.LikeCount__c}</p>
-                    <p>ReTweets : {tweet.RetweetCount__c}</p>
+                <div class="slds-grid slds-gutters slds-m-left_large" style="height: 200px; overflow: auto;">
+                    <div class="slds-col slds-size_8-of-12 ">
+                        <div>
+                            <!-- <lightning-textarea value={tweet.Content__c} readonly></lightning-textarea> -->
+                            <div style="white-space: pre-line; height: 200px; overflow: auto;" class="slds-tabs_card ">
+                                {tweet.Content__c}
+                            </div>
+                        </div>
 
+                    </div>
+                    <div style="background-color:aliceblue;white-space: pre-line;  overflow: auto;" class="slds-col slds-size_3-of-12 slds-tabs_card">
+                        <h3>Comments:</h3>
+                        <template if:true={tweet.Comments__r}>
+                            <div>
+                                <template for:each={tweet.Comments__r} for:item="comment">
+                                    <div key={comment.Id}>
+                                        <div  >
+                                            <strong>{comment.Author__r.Name}:</strong> {comment.Content__c}
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
                 </div>
                 <div>
+                    <p>Likes : {tweet.LikeCount__c}</p>
+                    <p>ReTweets : {tweet.RetweetCount__c}</p>
                     <lightning-button variant="brand" label="Retweet" onclick={handleRetweet}
                         data-id={tweet.Id}></lightning-button>
                     <lightning-button variant="brand" label="Like" onclick={handleLike}

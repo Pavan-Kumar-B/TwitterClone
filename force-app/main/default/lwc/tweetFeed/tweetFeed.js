@@ -2,6 +2,7 @@ import { LightningElement,wire } from 'lwc';
 import  getTweets  from '@salesforce/apex/TweetController.getTweets';
 import  createRetweet  from '@salesforce/apex/TweetController.createRetweet';
 import likeTweet from '@salesforce/apex/TweetController.likeTweet';
+import TweetMyComment from 'c/tweetMyComment';
 export default class TweetFeed extends LightningElement 
 {   tweets;
     error;
@@ -32,7 +33,7 @@ export default class TweetFeed extends LightningElement
                 alert("Retweeted")// Update UI to reflect retweet (e.g., increment count, display indicator)
             })
             .catch(error => {
-                alert("You can't retweet your own tweet");
+                alert(error.body.message);
             });
     }
 
@@ -46,27 +47,21 @@ export default class TweetFeed extends LightningElement
                 {
                     alert('Liked');
 
-                likeButton.label = 'Libked';       }
+                }
                 else
                 {
                     alert('Disliked');
                 }
-                const button = event.target;
-            button.label = tweet.Liked ? 'Unlike' : 'Like';
-            button.classList.toggle('liked');
-                
-                // Update UI to reflect the like:
-                // - Increment like count (if applicable)
-                // - Display a visual indicator (e.g., "Liked" label)
-                // - Consider disabling the like button for the current user
+         
             })
             .catch(error => {
-                alert('U can\'like Your post');
-                // Handle errors gracefully:
-                // - Display an error message to the user
-                // - Log the error for debugging
+                alert(error.body.message);
             });
 }
 
+    async handleComment(event) 
+    {  const tweetId = event.target.closest('lightning-card').dataset.id;
+        TweetMyComment.open({tweetId:tweetId});
+    }
 
 }   

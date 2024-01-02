@@ -1,7 +1,7 @@
 public with sharing class TweetController {
     @AuraEnabled
     public static String createTweet(String content) {
-        //Perform validation and security checks
+        //Perform validation 
         if (String.isBlank(content) || content.length() > 280) {
             throw new AuraHandledException('Invalid tweet content');
         }
@@ -12,7 +12,6 @@ public with sharing class TweetController {
 		newTweet.Author__c = UserInfo.getUserId();
         insert newTweet;
 
-        // Return the ID of the created tweet for potential use in LWC
         return newTweet.Id;
     }
     @AuraEnabled(cacheable=true)
@@ -58,7 +57,7 @@ public with sharing class TweetController {
 
         // Ensure the user isn't liking their own tweet
         if (tweet.Author__c ==  likingUserId) {
-             throw new AuraHandledException('Cannot like your own tweet');
+             throw new AuraHandledException('Cannot like/dislike your own tweet');
          }
 
         // Create or update the Like__c record
@@ -86,7 +85,7 @@ public with sharing class TweetController {
             throw new AuraHandledException('Invalid tweet comment');
         }
 
-        // Create the Tweet__c record
+        // Create the Comment__c record
         Comment__c newComment = new Comment__c();
         newComment.Tweet__c=tweetId;
         newComment.Content__c = content;

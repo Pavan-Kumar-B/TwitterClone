@@ -1,7 +1,10 @@
 <template>
-    <div class="slds-tabs_card" style="font-size: medium;">
+    
+    <div class="slds-tabs_card" style="font-size: large;">
         <lightning-textarea type="text" label="Compose Tweet" placeholder="What is happening?" value={tweetContent} onchange={handleContentChange}
             max-length="160"></lightning-textarea>
+        <p class="character-count">Characters remaining: {remainingCharacters}</p>
+
         <lightning-button variant="brand" label="Post" onclick={handlePost}></lightning-button>
     </div>
 </template>

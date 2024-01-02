@@ -19,7 +19,7 @@
 
                     </div>
                     <div style="background-color:aliceblue;white-space: pre-line;  overflow: auto;" class="slds-col slds-size_3-of-12 slds-tabs_card">
-                        <h3 style="position:sticky; overflow:hidden ;top:0; background-color:rgb(7, 26, 42); color:aliceblue">Comments:</h3>
+                        <h3 style="position:sticky; overflow:hidden ;top:0; background-color:rgb(7, 26, 42); color:aliceblue" class="slds-p-left_small"><Strong>Comments :</Strong></h3>
                         <template if:true={tweet.Comments__r}>
                             <div>
                                 <template for:each={tweet.Comments__r} for:item="comment">
@@ -33,9 +33,9 @@
                         </template>
                     </div>
                 </div>
-                <div>
-                    <p>Likes : {tweet.LikeCount__c}</p>
-                    <p>ReTweets : {tweet.RetweetCount__c}</p>
+                <div class="slds-m-left_x-large">
+                    <p><strong>Likes : {tweet.LikeCount__c}</strong></p>
+                    <p><strong>ReTweets : {tweet.RetweetCount__c}</strong></p>
                     <lightning-button variant="brand" label="Retweet" onclick={handleRetweet}
                         data-id={tweet.Id}></lightning-button>
                     <lightning-button variant="brand" label="Like" onclick={handleLike}

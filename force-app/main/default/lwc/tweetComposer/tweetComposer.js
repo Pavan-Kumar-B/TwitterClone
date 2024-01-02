@@ -4,9 +4,12 @@ import createTweet from '@salesforce/apex/TweetController.createTweet';
 export default class TweetComposer extends LightningElement 
 {
     tweetContent;
-    handleContentChange(event) {
+    remainingCharacters=160;
+    handleContentChange(event) 
+    {
         this.tweetContent = event.target.value;
-  }
+        this.remainingCharacters = 160 - this.tweetContent.length;
+    }
 
 
     handlePost()
@@ -15,7 +18,6 @@ export default class TweetComposer extends LightningElement
         .then(() => {
           this.tweetContent = '';
           alert("Posted");
-          window.location.reload();
          })
         .catch(error => {
             alert("Failed to tweet");

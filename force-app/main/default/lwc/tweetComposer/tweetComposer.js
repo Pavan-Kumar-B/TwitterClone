@@ -17,6 +17,7 @@ export default class TweetComposer extends LightningElement
          createTweet({ content: this.tweetContent })
         .then(() => {
           this.tweetContent = '';
+          remainingCharacters=160;
           alert("Posted");
          })
         .catch(error => {

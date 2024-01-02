@@ -93,5 +93,19 @@ public with sharing class TweetController {
         insert newComment;
 
     }
+
+    @AuraEnabled
+    public static void deleteComment(String commentId){
+        
+        comment__c c = [SELECT id,Author__c FROM comment__c WHERE id=:commentId LIMIT 1];
+        if(c.Author__c==UserInfo.getUserId())
+        {
+        delete c;
+        }
+        else
+        {
+            throw new AuraHandledException('You Can\'t Delete others comment');
+        }
+    }
     
 }

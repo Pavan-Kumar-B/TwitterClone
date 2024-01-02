@@ -1,6 +1,6 @@
 <template>
     <template if:true={tweetslen}>
-        <div style="font-size: xx-large;">
+        <div class="empty-feed">
             <p>Your Feed is Empty</p>
         </div>
     </template>
@@ -8,11 +8,11 @@
 
         <template for:each={tweets} for:item="tweet">
             <lightning-card key={tweet.Id} title={tweet.Author__r.Name} data-id={tweet.Id}>
-                <div class="slds-grid slds-gutters slds-m-left_large" style="height: 200px; overflow: auto;">
+                <div class="slds-grid slds-gutters slds-m-left_large tweet-container">
                     <div class="slds-col slds-size_8-of-12 ">
                         <div>
                             <!-- <lightning-textarea value={tweet.Content__c} readonly></lightning-textarea> -->
-                            <div style="white-space: pre-line; height: 200px; overflow: auto;" class="slds-tabs_card ">
+                            <div class="slds-tabs_card tweet ">
                                 {tweet.Content__c}
                                 <!-- Rich Text Area for Images -->
                                 <!-- <lightning-formatted-rich-text value={tweet.Content__c}></lightning-formatted-rich-text> -->
@@ -20,17 +20,16 @@
                         </div>
 
                     </div>
-                    <div style="background-color:aliceblue;white-space: pre-line;  overflow: auto;"
-                        class="slds-col slds-size_3-of-12 slds-tabs_card">
-                        <h3 style="position:sticky; overflow:hidden ;top:0; background-color:rgb(7, 26, 42); color:aliceblue"
-                            class="slds-p-left_small"><Strong>Comments :</Strong></h3>
-                        <template if:true={tweet.Comments__r}>
+                    <div class="slds-col slds-size_3-of-12 slds-tabs_card comment-container">
+                        <h3 class="slds-p-left_small"><Strong>Comments :</Strong></h3>
+                        <template if:true={tweet.Comments__r} >
                             <div>
                                 <template for:each={tweet.Comments__r} for:item="comment">
-                                    <div key={comment.Id}>
-                                        <div style="background-color:aliceblue" class="slds-tabs_card">
-                                            <strong>{comment.Author__r.Name}:</strong> {comment.Content__c}
-                                        </div>
+                                    <div class="comment" key={comment.Id}>
+                                        <div class="slds-tabs_card">
+                                            <strong>{comment.Author__r.Name}:</strong> <strong class="slds-float_right delete"  onclick={handleDelete} data-id={comment.Id}>Delete</strong>
+                                            <p>{comment.Content__c}</p>
+                                        </div>  
                                     </div>
                                 </template>
                             </div>
@@ -51,9 +50,9 @@
         </template>
     </template>
     <template if:true={error}>
-        <p style="font-size: xx-large;">An error occurred while fetching tweets.</p>
+        <p class="feed-error">An error occurred while fetching tweets.</p>
     </template>
     <template if:true={loading}>
-        <p style="font-size: xx-large;">Loading tweets...</p>
+        <p class="loading">Loading tweets...</p>
     </template>
 </template>

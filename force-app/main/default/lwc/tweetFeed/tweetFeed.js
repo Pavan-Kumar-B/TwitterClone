@@ -1,6 +1,7 @@
 import { LightningElement,wire } from 'lwc';
 import  getTweets  from '@salesforce/apex/TweetController.getTweets';
 import  createRetweet  from '@salesforce/apex/TweetController.createRetweet';
+import deleteComment from '@salesforce/apex/TweetController.deleteComment';
 import likeTweet from '@salesforce/apex/TweetController.likeTweet';
 import TweetMyComment from 'c/tweetMyComment';
 import  {refreshApex}  from '@salesforce/apex';
@@ -10,6 +11,7 @@ export default class TweetFeed extends LightningElement
     error;
     loading = true;
     tweetQuery;
+    hovered = false;
    
     @wire(getTweets)
     wiredData(result) 
@@ -84,5 +86,23 @@ export default class TweetFeed extends LightningElement
     }
      disconnectedCallback() {
         clearInterval(this.refreshInterval);
+    }
+
+    // display comment delete
+
+    handleHover()
+    {
+        this.hovered=!this.hovered;
+    }
+    handleDelete(event)
+    {
+         const commentId = event.target.closest('.delete').dataset.id;
+         deleteComment({commentId:commentId})
+         .then(()=>{
+            return refreshApex(this.tweetQuery)
+        }).catch(error=>{
+                alert(error.body.message);
+                console.log(error);
+         })
     }
 }   

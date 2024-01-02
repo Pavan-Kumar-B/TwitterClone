@@ -1,0 +1,61 @@
+/**/
+.delete
+{
+    visibility: hidden;
+    color: blue;
+}
+
+.comment:hover .delete
+{
+    visibility: visible;
+}
+
+.delete:hover
+{
+    color: red;
+    cursor: pointer;
+}
+
+.empty-feed
+{
+    font-size: xx-large;
+}
+
+.tweet
+{
+    white-space: pre-line; 
+    height: 200px; 
+    overflow: auto;
+}
+
+.comment-container
+{
+    background-color:aliceblue;
+    white-space: pre-line; 
+    height: 200px;  
+    overflow: auto;
+}
+
+.comment-container h3:first-child
+{
+    position:sticky; 
+    overflow:hidden ;
+    top:0; 
+    background-color:rgb(7, 26, 42); 
+    color:aliceblue;
+}
+
+.comment
+{
+    background-color:aliceblue;
+}
+
+.feed-Error
+{
+    font-size: xx-large;
+}
+
+.loading
+{
+    font-size: xx-large;
+}

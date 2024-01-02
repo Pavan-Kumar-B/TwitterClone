@@ -1,8 +1,13 @@
 <template>
-    
+
     <div class="slds-tabs_card" style="font-size: large;">
-        <lightning-textarea type="text" label="Compose Tweet" placeholder="What is happening?" value={tweetContent} onchange={handleContentChange}
-            max-length="160"></lightning-textarea>
+        <lightning-textarea type="text" label="Compose Tweet" placeholder="What is happening?" value={tweetContent}
+            onchange={handleContentChange} max-length="160"></lightning-textarea>
+
+        <!-- Rich Text Area for Images -->
+        <!-- <lightning-input-rich-text type="text" label="Compose Tweet" placeholder="What is happening?"
+            value={tweetContent} onchange={handleContentChange}></lightning-input-rich-text> -->
+
         <p class="character-count">Characters remaining: {remainingCharacters}</p>
 
         <lightning-button variant="brand" label="Post" onclick={handlePost}></lightning-button>

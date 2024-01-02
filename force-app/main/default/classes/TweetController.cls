@@ -2,7 +2,7 @@ public with sharing class TweetController {
     @AuraEnabled
     public static String createTweet(String content) {
         //Perform validation 
-        if (String.isBlank(content) || content.length() > 280) {
+        if (String.isBlank(content) || content.length() > 160) {
             throw new AuraHandledException('Invalid tweet content');
         }
 
